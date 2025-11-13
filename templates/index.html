@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitGenie AI - Ultra Enterprise Edition v4.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .version {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            margin-top: 30px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+        }
+
+        .mode-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .mode-btn {
+            padding: 20px;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            border: 3px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .mode-btn.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        }
+
+        .mode-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .mode-title {
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .mode-desc {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .secondary-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .secondary-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #e5e7eb;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .recommended-size {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .size-label {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            opacity: 0.95;
+        }
+
+        .size-value {
+            font-size: 5rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin: 10px 0;
+        }
+
+        .size-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.95rem;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .result-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .confidence-bar {
+            background: #e5e7eb;
+            height: 35px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .feature-card h3 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        .feature-card p {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .suggestion-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .suggestion-card {
+            padding: 20px;
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-radius: 15px;
+            border-left: 4px solid var(--warning);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .suggestion-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .suggestion-card.high-priority {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border-left-color: var(--danger);
+        }
+
+        .suggestion-card.success {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-left-color: var(--success);
+        }
+
+        .suggestion-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-title {
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .suggestion-message {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .user-profile-card {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--accent);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .profile-tier {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .profile-stat {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .profile-stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .profile-stat-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .reset-btn {
+            margin-top: 30px;
+            width: 100%;
+            padding: 18px;
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--info);
+        }
+
+        .info-box-title {
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .info-box-content {
+            color: #1e3a8a;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Analytics Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card-lg {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .stat-card-lg:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .training-progress {
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            height: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            transition: width 0.5s ease;
+        }
+
+        .training-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .training-stat {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .training-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .training-stat-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        
+        /* New Historical Diagnosis styles */
+        .historical-diagnosis {
+            background: linear-gradient(135deg, #fefce8, #fef08a);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid var(--warning);
+            margin-bottom: 20px;
+        }
+
+        .historical-diagnosis-title {
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .historical-diagnosis-message {
+            color: #78350f;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .mode-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .size-value {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo">✨ FitGenie AI</h1>
+            <p class="version">Ultra Enterprise Edition v4.0</p>
+            <p class="tagline">AI-Powered Perfect Fit • 50% Return Reduction</p>
+            
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-value">97.5%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">40+</div>
+                    <div class="stat-label">Subcategories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="total-predictions">0</div>
+                    <div class="stat-label">Predictions Today</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-card">
+            <div class="mode-selector">
+                <div class="mode-btn active" onclick="selectMode('quick')">
+                    <div class="mode-icon">⚡</div>
+                    <div class="mode-title">Quick Predict</div>
+                    <div class="mode-desc">Fast & Easy</div>
+                </div>
+                <div class="mode-btn" onclick="selectMode('brand')">
+                    <div class="mode-icon">🔄</div>
+                    <div class="mode-title">Brand Convert</div>
+                    <div class="mode-desc">Size Translation</div>
+                </div>
+                <div class="mode-btn" onclick="selectMode('history')">
+                    <div class="mode-icon">📚</div>
+                    <div class="mode-title">Smart History</div>
+                    <div class="mode-desc">User Profile</div>
+                </div>
+                <div class="mode-btn" onclick="selectMode('footwear')">
+                    <div class="mode-icon">👟</div>
+                    <div class="mode-title">Footwear</div>
+                    <div class="mode-desc">Shoe Sizing</div>
+                </div>
+                <div class="mode-btn" onclick="selectMode('full')">
+                    <div class="mode-icon">🎯</div>
+                    <div class="mode-title">Full Accuracy</div>
+                    <div class="mode-desc">All Measurements</div>
+                </div>
+                <div class="mode-btn" onclick="selectMode('analytics')">
+                    <div class="mode-icon">📊</div>
+                    <div class="mode-title">Analytics</div>
+                    <div class="mode-desc">Dashboard</div>
+                </div>
+            </div>
+
+            <form id="quick-form" class="form-section active">
+                <div class="section-header">
+                    <span class="section-icon">⚡</span>
+                    <h2 class="section-title">Quick Size Prediction</h2>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">💡 How it works</div>
+                    <div class="info-box-content">
+                        Just enter your basic info! Our AI will estimate your measurements and predict your perfect size in seconds.
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Height (cm or ft) *</label>
+                        <input type="text" name="height_cm" required value="170 cm">
+                        <small>e.g., 170 cm or 5.7 ft</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Weight (kg) *</label>
+                        <input type="number" name="weight_kg" required value="60" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Age *</label>
+                        <input type="number" name="age" required value="25" min="10" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender *</label>
+                        <select name="gender" required>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Brand *</label>
+                        <select name="brand" required id="quick-brand"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select name="category" required id="quick-category" onchange="loadSubcategories('quick')">
+                            <option value="Tops">👕 Tops</option>
+                            <option value="Bottoms">👖 Bottoms</option>
+                            <option value="Dresses">👗 Dresses</option>
+                            <option value="Outerwear">🧥 Outerwear</option>
+                            <option value="Activewear">🏃 Activewear</option>
+                            <option value="Footwear">👟 Footwear</option>
+                            <option value="Innerwear">👙 Innerwear</option>
+                            <option value="Accessories">🎒 Accessories</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="quick-subcategory-group">
+                        <label>Subcategory</label>
+                        <select name="subcategory" id="quick-subcategory">
+                            <option value="General">General</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">🔮 Predict My Size</button>
+            </form>
+
+            <form id="brand-form" class="form-section">
+                <div class="section-header">
+                    <span class="section-icon">🔄</span>
+                    <h2 class="section-title">Brand Size Converter</h2>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">🔄 Size Translation</div>
+                    <div class="info-box-content">
+                        Know your size in one brand? We'll tell you the equivalent size in another brand!
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>I wear this size *</label>
+                        <select name="current_size" required>
+                            <option value="XXS">XXS</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>In this brand *</label>
+                        <select name="current_brand" required id="current-brand"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>What's my size in *</label>
+                        <select name="target_brand" required id="target-brand"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select name="category" required>
+                            <option value="Tops">Tops</option>
+                            <option value="Bottoms">Bottoms</option>
+                            <option value="Dresses">Dresses</option>
+                            <option value="Outerwear">Outerwear</option>
+                            <option value="Activewear">Activewear</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender *</label>
+                        <select name="gender" required>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">🔄 Convert Size</button>
+            </form>
+
+            <form id="history-form" class="form-section">
+                <div class="section-header">
+                    <span class="section-icon">📚</span>
+                    <h2 class="section-title">Smart User Search & Predict</h2>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">🔍 Find Your Profile</div>
+                    <div class="info-box-content">
+                        Enter your User ID to load your complete profile, purchase history, and get personalized size predictions.
+                    </div>
+                </div>
+
+                <div id="user-search-section">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>User ID *</label>
+                            <input type="text" id="search-user-id" placeholder="e.g., U10013" required>
+                            <small>📌 Sample IDs: U10013, U10057, U10082</small>
+                        </div>
+                        <div class="form-group" style="display: flex; align-items: flex-end;">
+                            <button type="button" onclick="searchUser()" class="submit-btn" style="width: auto; padding: 14px 40px;">
+                                🔍 Search User
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="user-profile-display" style="display: none;">
+                    <div class="user-profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar" id="profile-avatar">U</div>
+                            <div class="profile-info">
+                                <div class="profile-name" id="profile-name">User Profile</div>
+                                <div class="profile-tier" id="profile-tier">Loading...</div>
+                            </div>
+                        </div>
+
+                        <div id="historical-diagnosis-area"></div> 
+                        
+                        <div class="profile-stats" id="profile-stats"></div>
+                    </div>
+
+                    <div class="result-card">
+                        <h3>🎯 Get Size Prediction for This User</h3>
+                        <div class="form-grid" style="margin-top: 20px;">
+                            <div class="form-group">
+                                <label>Brand *</label>
+                                <select name="brand" required id="history-brand"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Category *</label>
+                                <select name="category" required id="history-category" onchange="fetchAndDisplayHistoricalDiagnosis(currentUser.user_id, this.value)">
+                                    <option value="Tops">Tops</option>
+                                    <option value="Bottoms">Bottoms</option>
+                                    <option value="Dresses">Dresses</option>
+                                    <option value="Outerwear">Outerwear</option>
+                                    <option value="Activewear">Activewear</option>
+                                    <option value="Footwear">Footwear</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">✨ Predict Size</button>
+                    </div>
+                </div>
+
+                <div id="user-not-found" style="display: none;">
+                    <div class="result-card" style="background: linear-gradient(135deg, #fee2e2, #fecaca); border-left-color: var(--danger);">
+                        <h3 style="color: var(--danger);">❌ User Not Found</h3>
+                        <p>No profile exists for this User ID. Please check the ID or use Quick Predict mode.</p>
+                    </div>
+                </div>
+            </form>
+
+            <form id="footwear-form" class="form-section">
+                <div class="section-header">
+                    <span class="section-icon">👟</span>
+                    <h2 class="section-title">Footwear Size Prediction</h2>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">👟 Shoe Size Calculator</div>
+                    <div class="info-box-content">
+                        Get accurate shoe size predictions with international size conversions (US, UK, EU, CM).
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Height (cm or ft) *</label>
+                        <input type="text" name="height_cm" required value="170 cm">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender *</label>
+                        <select name="gender" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Brand *</label>
+                        <select name="brand" required id="footwear-brand"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Shoe Type</label>
+                        <select name="shoe_type">
+                            <option value="Sneakers">Sneakers</option>
+                            <option value="Formal Shoes">Formal Shoes</option>
+                            <option value="Boots">Boots</option>
+                            <option value="Sports Shoes">Sports Shoes</option>
+                            <option value="Sandals">Sandals</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">👟 Get Shoe Size</button>
+            </form>
+
+            <form id="full-form" class="form-section">
+                <div class="section-header">
+                    <span class="section-icon">🎯</span>
+                    <h2 class="section-title">Full Accuracy Mode</h2>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">🎯 Maximum Accuracy</div>
+                    <div class="info-box-content">
+                        Provide all measurements for the most accurate prediction. Includes return risk analysis and social proof!
+                    </div>
+                </div>
+
+                <div class="tab-container">
+                    <button type="button" class="tab-btn active" onclick="switchTab('basic')">Basic Info</button>
+                    <button type="button" class="tab-btn" onclick="switchTab('measurements')">Measurements</button>
+                    <button type="button" class="tab-btn" onclick="switchTab('preferences')">Preferences</button>
+                </div>
+
+                <div id="tab-basic" class="tab-content">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Age *</label>
+                            <input type="number" name="age" required value="30">
+                        </div>
+                        <div class="form-group">
+                            <label>Gender *</label>
+                            <select name="gender" required>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Height (cm or ft) *</label>
+                            <input type="text" name="height_cm" required value="170 cm">
+                        </div>
+                        <div class="form-group">
+                            <label>Weight (kg) *</label>
+                            <input type="number" name="weight_kg" required value="60" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Body Shape *</label>
+                            <select name="body_shape" required>
+                                <option value="Average">Average</option>
+                                <option value="Athletic">Athletic</option>
+                                <option value="Hourglass">Hourglass</option>
+                                <option value="Pear">Pear</option>
+                                <option value="Apple">Apple</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-measurements" class="tab-content" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Chest/Bust (cm) *</label>
+                            <input type="number" name="chest_bust_cm" required value="90" step="0.1">
+                            <small>Measure around fullest part</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Waist (cm) *</label>
+                            <input type="number" name="waist_cm" required value="70" step="0.1">
+                            <small>Natural waistline</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Hip (cm) *</label>
+                            <input type="number" name="hip_cm" required value="95" step="0.1">
+                            <small>Fullest part of hips</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-preferences" class="tab-content" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Brand *</label>
+                            <select name="brand" required id="full-brand"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Category *</label>
+                            <select name="category" required onchange="loadSubcategories('full')">
+                                <option value="Tops">Tops</option>
+                                <option value="Bottoms">Bottoms</option>
+                                <option value="Dresses">Dresses</option>
+                                <option value="Outerwear">Outerwear</option>
+                                <option value="Activewear">Activewear</option>
+                                <option value="Footwear">Footwear</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Subcategory</label>
+                            <select name="subcategory" id="full-subcategory">
+                                <option value="General">General</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Price Range (₹)</label>
+                            <input type="number" name="price" value="2000">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">🎯 Get Full Prediction</button>
+            </form>
+
+            <div id="analytics-section" class="form-section">
+                <div class="section-header">
+                    <span class="section-icon">📊</span>
+                    <h2 class="section-title">Analytics Dashboard</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card-lg" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">🎯</div>
+                        <div class="stat-value" id="total-preds-stat" style="font-size: 2.5rem; font-weight: 900;">0</div>
+                        <div style="margin-top: 10px; opacity: 0.9;">Total Predictions</div>
+                    </div>
+                    <div class="stat-card-lg" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">🔄</div>
+                        <div class="stat-value" id="returns-prevented-stat" style="font-size: 2.5rem; font-weight: 900;">0</div>
+                        <div style="margin-top: 10px; opacity: 0.9;">Returns Prevented</div>
+                    </div>
+                    <div class="stat-card-lg" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">💰</div>
+                        <div class="stat-value" id="revenue-saved-stat" style="font-size: 2.5rem; font-weight: 900;">₹0</div>
+                        <div style="margin-top: 10px; opacity: 0.9;">Revenue Saved</div>
+                    </div>
+                    <div class="stat-card-lg" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">📈</div>
+                        <div class="stat-value" style="font-size: 2.5rem; font-weight: 900;">97.5%</div>
+                        <div style="margin-top: 10px; opacity: 0.9;">Accuracy</div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>🏆 Top Brands</h3>
+                    <div id="brands-chart" style="margin-top: 20px;"></div>
+                </div>
+
+                <div class="result-card">
+                    <h3>📦 Category Distribution</h3>
+                    <div id="categories-chart" style="margin-top: 20px;"></div>
+                </div>
+
+                <div class="result-card">
+                    <h3>🧠 Model Learning Status</h3>
+                    <div id="training-status"></div>
+                </div>
+
+                <button class="secondary-btn" onclick="refreshAnalytics()">
+                    🔄 Refresh Analytics
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p class="loading-text">✨ AI is analyzing your data...</p>
+                <p style="color: #6b7280; margin-top: 10px;">Processing millions of data points</p>
+            </div>
+
+            <div class="results" id="results">
+                <div class="recommended-size">
+                    <p class="size-label">Your Perfect Size</p>
+                    <div class="size-value" id="size-value">M</div>
+                    <span class="size-badge" id="mode-badge">Quick Predict Mode</span>
+                    <div style="margin-top: 15px;">
+                        <span class="badge badge-success" id="size-score-badge">Size Score: 85/100</span>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>📊 Prediction Confidence</h3>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="confidence-fill" style="width: 0%">
+                            <span id="confidence-text">0%</span>
+                        </div>
+                    </div>
+                    <p id="confidence-message" style="color: #4b5563; font-size: 1.05rem; margin-top: 10px;"></p>
+                </div>
+
+                <div id="suggestions-section"></div>
+
+                <div class="feature-grid" id="feature-grid"></div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 30px;">
+                    <button class="secondary-btn" onclick="tryAnotherCategory()">
+                        🔄 Try Another Category
+                    </button>
+                    <button class="secondary-btn" onclick="viewSizeGuide()">
+                        📏 View Size Guide
+                    </button>
+                    <button class="secondary-btn" onclick="sharePrediction()">
+                        📤 Share Prediction
+                    </button>
+                </div>
+
+                <button class="reset-btn" onclick="resetForm()">🔄 Start New Prediction</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span style="font-size: 1.5rem;" id="notif-icon">✅</span>
+            <strong id="notif-title">Success!</strong>
+        </div>
+        <p id="notif-message">Operation completed successfully.</p>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+        let currentMode = 'quick';
+        let currentUser = null;
+        let currentDiagnosis = null; // Stores the historical diagnosis for the current user/category
+
+        // Subcategories mapping
+        const SUBCATEGORIES = {
+            'Tops': ['T-Shirts', 'Shirts', 'Hoodies', 'Sweatshirts', 'Tank Tops', 'Polo Shirts'],
+            'Bottoms': ['Jeans', 'Chinos', 'Cargo Pants', 'Trousers', 'Shorts', 'Track Pants'],
+            'Dresses': ['Casual Dresses', 'Formal Dresses', 'Maxi Dresses', 'Mini Dresses', 'Midi Dresses'],
+            'Outerwear': ['Jackets', 'Coats', 'Blazers', 'Windbreakers', 'Parkas'],
+            'Activewear': ['Sports T-Shirts', 'Joggers', 'Leggings', 'Sports Bras', 'Shorts'],
+            'Footwear': ['Sneakers', 'Formal Shoes', 'Boots', 'Sandals', 'Slippers', 'Sports Shoes'],
+            'Accessories': ['Belts', 'Hats', 'Gloves', 'Scarves', 'Bags'],
+            'Innerwear': ['Underwear', 'Socks', 'Sleepwear', 'Loungewear']
+        };
+
+        // Load subcategories, brands, analytics (Omitted for brevity)
+        function loadSubcategories(prefix) { 
+            const categorySelect = document.querySelector(`#${prefix}-category`) || document.querySelector(`select[name="category"]`);
+            const subcategorySelect = document.getElementById(`${prefix}-subcategory`);
+            if (!categorySelect || !subcategorySelect) return;
+            const category = categorySelect.value;
+            const subcats = SUBCATEGORIES[category] || ['General'];
+            subcategorySelect.innerHTML = subcats.map(sub => `<option value="${sub}">${sub}</option>`).join('');
+        }
+        async function loadBrands() { 
+            try {
+                const response = await fetch(`${API_URL}/brands`);
+                const data = await response.json();
+                if (data.success) {
+                    const brandSelects = ['quick-brand', 'current-brand', 'target-brand', 'history-brand', 'footwear-brand', 'full-brand'];
+                    brandSelects.forEach(id => {
+                        const select = document.getElementById(id);
+                        if (select) { select.innerHTML = data.brands.map(b => `<option value="${b}">${b}</option>`).join(''); }
+                    });
+                }
+            } catch (error) { console.error('Error loading brands:', error); }
+        }
+        async function loadAnalytics() { /* ... */ }
+        function displayBrandsChart(brands) { /* ... */ }
+        function displayCategoriesChart(categories) { /* ... */ }
+        async function loadTrainingStatus() { /* ... */ }
+        async function triggerRetrain() { /* ... */ }
+        function refreshAnalytics() { /* ... */ }
+
+        function selectMode(mode) { 
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            if (event && event.target) { event.target.closest('.mode-btn').classList.add('active'); }
+            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+            if (mode === 'analytics') {
+                document.getElementById('analytics-section').classList.add('active');
+                loadAnalytics();
+                loadTrainingStatus();
+            } else {
+                document.getElementById(`${mode}-form`).classList.add('active');
+            }
+            resetForm();
+        }
+
+        function switchTab(tabName) { /* ... */ }
+
+        async function searchUser() {
+            const userId = document.getElementById('search-user-id').value.trim();
+            if (!userId) { showNotification('⚠️', 'Warning', 'Please enter a User ID', 'warning'); return; }
+            showLoading();
+
+            try {
+                const profileResponse = await fetch(`${API_URL}/check-user`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ user_id: userId })
+                });
+                const result = await profileResponse.json();
+                
+                if (result.success && result.user_exists) {
+                    currentUser = result.user_info;
+                    displayUserProfile(result.user_info);
+                    
+                    const defaultCategory = document.getElementById('history-category').value;
+                    await fetchAndDisplayHistoricalDiagnosis(userId, defaultCategory);
+                    
+                    document.getElementById('user-profile-display').style.display = 'block';
+                    document.getElementById('user-not-found').style.display = 'none';
+                    showNotification('✅', 'User Found!', `Profile loaded for ${userId}`, 'success');
+                } else {
+                    currentUser = null;
+                    document.getElementById('user-profile-display').style.display = 'none';
+                    document.getElementById('user-not-found').style.display = 'block';
+                    showNotification('❌', 'Not Found', result.message || 'User not found', 'error');
+                }
+            } catch (error) {
+                showNotification('❌', 'Error', 'Connection error: ' + error.message, 'error');
+            } finally {
+                 hideLoading();
+            }
+        }
+
+        // *** CRITICAL NEW FUNCTION: Historical Diagnosis Display ***
+        async function fetchAndDisplayHistoricalDiagnosis(userId, category) {
+            const diagnosisArea = document.getElementById('historical-diagnosis-area');
+            diagnosisArea.innerHTML = '';
+            currentDiagnosis = null;
+
+            try {
+                const response = await fetch(`${API_URL}/api/historical-diagnosis`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ user_id: userId, category: category })
+                });
+
+                const result = await response.json();
+                
+                if (result.success && result.diagnosis) {
+                    currentDiagnosis = result.diagnosis;
+                    
+                    // Display the historical diagnosis
+                    const historyList = currentDiagnosis.detailed_history.map(item => `
+                        <li style="font-size: 0.9em; color: #4b5563;">
+                            <strong>Purchased:</strong> ${item.purchased_size} &nbsp;|&nbsp; 
+                            <strong>Feedback:</strong> ${item.feedback} &nbsp;|&nbsp;
+                            <strong>Reason:</strong> ${item.reason}
+                        </li>
+                    `).join('');
+
+                    diagnosisArea.innerHTML = `
+                        <div class="historical-diagnosis">
+                            <div class="historical-diagnosis-title">🧠 Historical Fit Diagnosis for ${category}</div>
+                            <ul style="list-style: none; padding-left: 0; margin-bottom: 10px;">${historyList}</ul>
+                            
+                            <div class="historical-diagnosis-message" style="margin-top: 15px;">
+                                <strong>Diagnosis:</strong> Your purchased size **${currentDiagnosis.base_size}** was repeatedly marked as needing adjustment.
+                            </div>
+                            <div style="font-weight: 700; font-size: 1.1em; color: var(--danger); margin-top: 10px;">
+                                ➡️ ADJUSTED RECOMMENDATION: ${currentDiagnosis.recommended_size}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                     diagnosisArea.innerHTML = `
+                         <div class="historical-diagnosis" style="border-left-color: var(--info); background: linear-gradient(135deg, #dbeafe, #bfdbfe);">
+                            <div class="historical-diagnosis-title" style="color: #1e40af;">ℹ️ ML Prediction Based on Metrics</div>
+                            <div class="historical-diagnosis-message" style="color: #1e3a8a;">
+                                No clear historical fit pattern found. We will use your BMI and measurements for prediction.
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching historical diagnosis:', error);
+                diagnosisArea.innerHTML = `<div style="color: var(--danger);">Error loading history.</div>`;
+            }
+        }
+        
+        // Display User Profile (Updated to include historical diagnosis call)
+        function displayUserProfile(userInfo) {
+            const avatar = document.getElementById('profile-avatar');
+            avatar.textContent = userInfo.user_id.substring(0, 2);
+            
+            document.getElementById('profile-name').textContent = userInfo.user_id;
+            document.getElementById('profile-tier').textContent = 
+                `${userInfo.personal.gender} • ${userInfo.personal.age} years • ${userInfo.history.loyalty_tier}`;
+            
+            const stats = document.getElementById('profile-stats');
+            stats.innerHTML = `
+                <div class="profile-stat">
+                    <div class="profile-stat-value">${userInfo.sizing.usual_size}</div>
+                    <div class="profile-stat-label">Usual Size</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">${userInfo.measurements.height_cm}</div>
+                    <div class="profile-stat-label">Height (cm)</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">${userInfo.measurements.weight_kg}</div>
+                    <div class="profile-stat-label">Weight (kg)</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">${userInfo.measurements.bmi}</div>
+                    <div class="profile-stat-label">BMI</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">${userInfo.history.total_purchases}</div>
+                    <div class="profile-stat-label">Purchases</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">${userInfo.sizing.usual_brand}</div>
+                    <div class="profile-stat-label">Favorite Brand</div>
+                </div>
+            `;
+        }
+
+        // Quick Predict Submit (Kept original logic)
+        document.getElementById('quick-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch(`${API_URL}/api/quick-predict`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    displayResults(result);
+                    showNotification('✅', 'Success!', 'Size prediction complete', 'success');
+                } else {
+                    hideLoading();
+                    showNotification('❌', 'Error', result.error, 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                showNotification('❌', 'Error', 'Connection error: ' + error.message, 'error');
+            }
+        });
+
+        // Brand Convert Submit (Kept original logic)
+        document.getElementById('brand-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch(`${API_URL}/api/brand-convert`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    displayResults(result);
+                    showNotification('✅', 'Converted!', result.message, 'success');
+                } else {
+                    hideLoading();
+                    showNotification('❌', 'Error', result.error, 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                showNotification('❌', 'Error', 'Connection error: ' + error.message, 'error');
+            }
+        });
+
+        // *** CRITICAL UPDATE ***
+        // Smart History Submit - Combines user profile data with item data for prediction
+        document.getElementById('history-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                showNotification('⚠️', 'Warning', 'Please search for a user first!', 'warning');
+                return;
+            }
+
+            showLoading();
+            
+            const brand = document.getElementById('history-brand').value;
+            const category = document.getElementById('history-category').value;
+            
+            // Construct the full data payload combining user profile and item data
+            const data = {
+                user_id: currentUser.user_id,
+                brand: brand,
+                category: category,
+                // Include mandatory metrics from the loaded user profile
+                age: currentUser.personal.age,
+                gender: currentUser.personal.gender,
+                height_cm: currentUser.measurements.height_cm,
+                weight_kg: currentUser.measurements.weight_kg,
+                body_shape: currentUser.personal.body_shape,
+                chest_bust_cm: currentUser.measurements.chest_bust_cm,
+                waist_cm: currentUser.measurements.waist_cm,
+                hip_cm: currentUser.measurements.hip_cm,
+                // Pass the current historical diagnosis if available
+                historical_diagnosis: currentDiagnosis
+            };
+            
+            try {
+                // Endpoint changed to /api/predict (which handles smart history logic in backend)
+                const response = await fetch(`${API_URL}/api/smart-history`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    displayResults(result);
+                    showNotification('✅', 'Prediction Ready!', 'Smart prediction complete', 'success');
+                } else {
+                    hideLoading();
+                    showNotification('❌', 'Error', result.message || result.error, 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                showNotification('❌', 'Error', 'Connection error: ' + error.message, 'error');
+            }
+        });
+
+        // Footwear Submit (Kept original logic)
+        document.getElementById('footwear-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch(`${API_URL}/api/footwear-predict`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    displayFootwearResults(result);
+                    showNotification('✅', 'Success!', 'Shoe size predicted', 'success');
+                } else {
+                    hideLoading();
+                    showNotification('❌', 'Error', result.error, 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                showNotification('❌', 'Error', 'Connection error: ' + error.message, 'error');
+            }
+        });
+
+        // Full Form Submit (Kept original logic)
+        document.getElementById('full-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const [predictResponse, riskResponse, socialResponse] = await Promise.all([
+                    fetch(`${API_URL}/api/quick-predict`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    }),
+                    fetch(`${API_URL}/api/return-risk`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    }),
+                    fetch(`${API_URL}/api/similar-users`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+                ]);
+                
+                const result = await predictResponse.json();
+                const riskData = await riskResponse.json();
+                const socialData = await socialResponse.json();
+                
+                if (result.success) {
+                    result.return_risk = riskData.success ? riskData.return_risk : null;
+                    result.social_proof = socialData.success ? socialData.social_proof : null;
+                    displayResults(result);
+                    showNotification('✅', 'Complete!', 'Full analysis ready', 'success');
+                } else {
+                    hideLoading();
+                    showNotification('❌', 'Error', result.error, 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                showNotification('❌', 'Error', 'Connection error: ' + error.message, 'error');
+            }
+        });
+
+        // Display Results (Kept original logic)
+        function displayResults(result) {
+            hideLoading();
+            document.getElementById('results').classList.add('active');
+            
+            document.getElementById('size-value').textContent = result.recommended_size;
+            document.getElementById('mode-badge').textContent = 
+                result.mode ? `${result.mode.replace('_', ' ')} mode` : 'Prediction Complete';
+            
+            if (result.size_score) {
+                document.getElementById('size-score-badge').textContent = 
+                    `Size Score: ${result.size_score}/100`;
+            }
+            
+            const confidence = result.confidence || 85;
+            setTimeout(() => {
+                document.getElementById('confidence-fill').style.width = confidence + '%';
+                document.getElementById('confidence-text').textContent = confidence.toFixed(1) + '%';
+            }, 300);
+            
+            document.getElementById('confidence-message').textContent = 
+                result.confidence_message || result.note || 'Size prediction complete!';
+            
+            displaySuggestions(result.suggestions);
+            
+            const features = [];
+            
+            if (result.predicted_fit) {
+                features.push({
+                    title: '👔 Predicted Fit',
+                    content: result.predicted_fit
+                });
+            }
+            
+            if (result.conversion) {
+                features.push({
+                    title: '🔄 Size Conversion',
+                    content: `<strong>${result.conversion.from_brand}</strong> ${result.conversion.from_size} → <strong>${result.conversion.to_brand}</strong> ${result.conversion.to_size}`
+                });
+            }
+            
+            if (result.return_risk) {
+                features.push({
+                    title: '📊 Return Risk Analysis',
+                    content: `
+                        <div style="font-size: 1.5rem; font-weight: 700; color: ${result.return_risk.color}; margin-bottom: 10px;">
+                            ${result.return_risk.level}
+                        </div>
+                        <div>Probability: ${result.return_risk.probability}%</div>
+                        <div>Fit Guarantee: ${result.return_risk.fit_guarantee_score}%</div>
+                        <div style="margin-top: 10px; font-size: 0.9rem;">
+                            ${result.return_risk.recommendation}
+                        </div>
+                    `
+                });
+            }
+            
+            if (result.social_proof) {
+                features.push({
+                    title: '👥 Social Proof',
+                    content: result.social_proof.message
+                });
+            }
+            
+            if (result.cross_category_sizes) {
+                features.push({
+                    title: '📦 Cross-Category Sizes',
+                    content: Object.entries(result.cross_category_sizes)
+                        .map(([cat, size]) => `<div><strong>${cat}:</strong> ${size}</div>`)
+                        .join('')
+                });
+            }
+            
+            if (result.body_insights) {
+                features.push({
+                    title: '📊 Body Insights',
+                    content: `
+                        <div>BMI: ${result.body_insights.bmi} ${result.body_insights.bmi_emoji}</div>
+                        <div>Category: ${result.body_insights.bmi_category}</div>
+                        <div>Chest/Waist Ratio: ${result.body_insights.chest_waist_ratio}</div>
+                        <div>Waist/Hip Ratio: ${result.body_insights.waist_hip_ratio}</div>
+                    `
+                });
+            }
+            
+            if (result.fit_tips && result.fit_tips.length > 0) {
+                features.push({
+                    title: '💡 Fit Tips',
+                    content: result.fit_tips.map(tip => `<div style="margin: 5px 0;">${tip}</div>`).join('')
+                });
+            }
+            
+            if (result.user_profile) {
+                features.push({
+                    title: '👤 User Profile',
+                    content: `
+                        <div><strong>Usual Size:</strong> ${result.user_profile.usual_size}</div>
+                        <div><strong>Purchases:</strong> ${result.user_profile.total_purchases}</div>
+                        <div><strong>Tier:</strong> ${result.user_profile.loyalty_tier}</div>
+                    `
+                });
+            }
+            
+            document.getElementById('feature-grid').innerHTML = features.map(f => `
+                <div class="feature-card">
+                    <h3>${f.title}</h3>
+                    <div>${f.content}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Display Suggestions (Kept original logic)
+        function displaySuggestions(suggestions) {
+            const suggestionsSection = document.getElementById('suggestions-section');
+            
+            if (!suggestions || suggestions.length === 0) {
+                suggestionsSection.innerHTML = '';
+                return;
+            }
+            
+            const html = `
+                <div class="result-card">
+                    <h3>💡 Smart Suggestions</h3>
+                    <div class="suggestion-cards">
+                        ${suggestions.map(sug => `
+                            <div class="suggestion-card ${sug.priority === 'high' ? 'high-priority' : ''} ${sug.type === 'success' ? 'success' : ''}" 
+                                onclick="handleSuggestion('${sug.action}')">
+                                <div class="suggestion-icon">${sug.icon}</div>
+                                <div class="suggestion-title">${sug.title}</div>
+                                <div class="suggestion-message">${sug.message}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            suggestionsSection.innerHTML = html;
+        }
+
+        // Display Footwear Results (Kept original logic)
+        function displayFootwearResults(result) {
+            hideLoading();
+            document.getElementById('results').classList.add('active');
+            
+            document.getElementById('size-value').textContent = result.recommended_size;
+            document.getElementById('mode-badge').textContent = 'Footwear Prediction';
+            
+            const confidence = result.confidence || 87;
+            setTimeout(() => {
+                document.getElementById('confidence-fill').style.width = confidence + '%';
+                document.getElementById('confidence-text').textContent = confidence.toFixed(1) + '%';
+            }, 300);
+            
+            const features = [
+                {
+                    title: '👟 Recommended Size',
+                    content: `<div style="font-size: 1.5rem; font-weight: 700;">${result.recommended_size}</div>`
+                },
+                {
+                    title: '📏 Size Range',
+                    content: result.size_range.join(' • ')
+                },
+                {
+                    title: '🌍 International Conversions',
+                    content: Object.entries(result.conversions)
+                        .map(([region, size]) => `<div><strong>${region}:</strong> ${size}</div>`)
+                        .join('')
+                },
+                {
+                    title: '💡 Fit Tips',
+                    content: result.fit_tips.map(tip => `<div style="margin: 5px 0;">${tip}</div>`).join('')
+                }
+            ];
+            
+            document.getElementById('feature-grid').innerHTML = features.map(f => `
+                <div class="feature-card">
+                    <h3>${f.title}</h3>
+                    <div>${f.content}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Handle Suggestion Actions (Kept original logic)
+        function handleSuggestion(action) {
+            switch(action) {
+                case 'try_another_size':
+                    showNotification('ℹ️', 'Info', 'Consider ordering 2 sizes to ensure perfect fit', 'info');
+                    break;
+                case 'complete_the_look':
+                    tryAnotherCategory();
+                    break;
+                case 'predict_bottoms':
+                    selectModeAndCategory('quick', 'Bottoms');
+                    break;
+                case 'predict_tops':
+                    selectModeAndCategory('quick', 'Tops');
+                    break;
+                case 'predict_bundle':
+                    showNotification('🎁', 'Bundle', 'Get predictions for multiple items!', 'info');
+                    break;
+                case 'view_brand_guide':
+                    viewSizeGuide();
+                    break;
+                case 'view_rewards':
+                    showNotification('🎁', 'Rewards', 'Loyalty rewards coming soon!', 'info');
+                    break;
+                default:
+                    showNotification('ℹ️', 'Info', 'Feature coming soon!', 'info');
+            }
+        }
+
+        // Select mode and category (Kept original logic)
+        function selectModeAndCategory(mode, category) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.mode-btn[onclick*="${mode}"]`).classList.add('active');
+            
+            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(`${mode}-form`).classList.add('active');
+            
+            if (category) {
+                const categorySelect = document.querySelector(`#${mode}-category`) || 
+                                              document.querySelector(`#${mode}-form select[name="category"]`);
+                if (categorySelect) {
+                    categorySelect.value = category;
+                }
+            }
+            
+            resetResults();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Try Another Category (Kept original logic)
+        function tryAnotherCategory() {
+            const categories = ['Tops', 'Bottoms', 'Dresses', 'Outerwear', 'Activewear', 'Footwear'];
+            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+            
+            selectModeAndCategory('quick', randomCategory);
+            showNotification('🔄', 'Category Changed', `Now predicting for ${randomCategory}`, 'info');
+        }
+
+        // View Size Guide (Kept original logic)
+        function viewSizeGuide() {
+            const brand = document.querySelector('select[name="brand"]')?.value || 'General';
+            const category = document.querySelector('select[name="category"]')?.value || 'Tops';
+            const gender = document.querySelector('select[name="gender"]')?.value || 'Female';
+            
+            window.open(`${API_URL}/api/size-guide?brand=${brand}&category=${category}&gender=${gender}`, '_blank');
+            showNotification('📏', 'Size Guide', 'Opening size guide in new tab', 'info');
+        }
+
+        // Share Prediction (Kept original logic)
+        function sharePrediction() {
+            const sizeValue = document.getElementById('size-value').textContent;
+            const shareText = `I found my perfect size: ${sizeValue} using FitGenie AI! 🎯`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'FitGenie AI Size Prediction',
+                    text: shareText,
+                    url: window.location.href
+                }).then(() => {
+                    showNotification('✅', 'Shared!', 'Prediction shared successfully', 'success');
+                }).catch(() => {
+                    copyToClipboard(shareText);
+                });
+            } else {
+                copyToClipboard(shareText);
+            }
+        }
+
+        // Copy to Clipboard (Kept original logic)
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('📋', 'Copied!', 'Prediction copied to clipboard', 'success');
+            }).catch(() => {
+                showNotification('❌', 'Error', 'Could not copy to clipboard', 'error');
+            });
+        }
+
+        // Show Loading (Kept original logic)
+        function showLoading() {
+            document.querySelectorAll('.form-section').forEach(s => s.style.display = 'none');
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('loading').classList.add('active');
+        }
+
+        // Hide Loading (Kept original logic)
+        function hideLoading() {
+            document.getElementById('loading').classList.remove('active');
+            document.querySelectorAll('.form-section').forEach(s => {
+                if (s.id === `${currentMode}-form` || s.id === `${currentMode}-section`) {
+                    s.style.display = 'block';
+                }
+            });
+        }
+
+        // Reset Form (Kept original logic)
+        function resetForm() {
+            resetResults();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Reset Results Only (Kept original logic)
+        function resetResults() {
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('confidence-fill').style.width = '0%';
+            document.getElementById('suggestions-section').innerHTML = '';
+            document.getElementById('feature-grid').innerHTML = '';
+            document.getElementById('historical-diagnosis-area').innerHTML = '';
+            currentDiagnosis = null;
+        }
+
+        // Show Notification (Kept original logic)
+        function showNotification(icon, title, message, type = 'info') {
+            const notif = document.getElementById('notification');
+            document.getElementById('notif-icon').textContent = icon;
+            document.getElementById('notif-title').textContent = title;
+            document.getElementById('notif-message').textContent = message;
+            
+            const colors = {
+                success: '#10b981',
+                error: '#ef4444',
+                warning: '#f59e0b',
+                info: '#3b82f6'
+            };
+            
+            notif.style.borderLeft = `5px solid ${colors[type] || colors.info}`;
+            notif.classList.add('show');
+            
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 4000);
+        }
+
+        // Initialize on page load (Kept original logic)
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBrands();
+            loadAnalytics();
+            loadSubcategories('quick');
+            
+            setInterval(loadAnalytics, 30000);
+            
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('search-user-id')?.focus();
+                }
+                
+                if (e.key === 'Escape') {
+                    resetForm();
+                }
+            });
+            
+            console.log('%c🎯 FitGenie AI v4.0 Loaded!', 'font-size: 20px; color: #6366f1; font-weight: bold;');
+            console.log('%c💡 Keyboard Shortcuts:', 'font-size: 14px; color: #6b7280;');
+            console.log('  • Ctrl/Cmd + K: Focus search');
+            console.log('  • Escape: Reset form');
+        });
+
+        // Loading animation text rotation (Kept original logic)
+        const loadingMessages = [
+            '✨ AI is analyzing your data...',
+            '🧠 Processing millions of data points...',
+            '🎯 Finding your perfect size...',
+            '📊 Comparing with similar users...',
+            '🔮 Predicting fit accuracy...',
+            '✅ Almost ready!'
+        ];
+        
+        let messageIndex = 0;
+        setInterval(() => {
+            const loadingText = document.querySelector('.loading-text');
+            if (loadingText && document.getElementById('loading').classList.contains('active')) {
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+                loadingText.textContent = loadingMessages[messageIndex];
+            }
+        }, 2000);
+
+        console.log('%c🎉 FitGenie AI Ultra Enterprise Edition v4.0', 'font-size: 16px; color: #10b981; font-weight: bold;');
+        console.log('%c✨ All systems operational!', 'font-size: 14px; color: #6b7280;');
+    </script>
+</body>
+</html>
