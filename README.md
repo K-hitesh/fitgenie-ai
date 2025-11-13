@@ -3,8 +3,6 @@
 
 > **AI-powered clothing size prediction system that reduces e-commerce fashion returns by 50% through machine learning.**
 
-)
-
 📊 **API Endpoints:**
 - Health Check: `/health`
 - API Info: `/api/info`
@@ -650,7 +648,7 @@ copies or substantial portions of the Software.
 **Hitesh K**
 
 - 🌐 GitHub: [@K-hitesh](https://github.com/K-hitesh)
-- 💼 LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/hiteshkamisetty11/)
+- 💼 LinkedIn: (https://www.linkedin.com/in/hiteshkamisetty11/)
 - 📧 Email: hiteshkamisetty11092004@gmail.com
 - 🌍 Portfolio: https://hitesh-kamisetty.vercel.app/
 
@@ -720,22 +718,6 @@ Need help? Here's how to get support:
 
 
 
----
-## 📸 Screenshots
-
-### Home Page
-![Home Page](https://via.placeholder.com/800x400?text=Add+Your+Screenshot+Here)
-
-### Prediction Results
-![Prediction Results](https://via.placeholder.com/800x400?text=Add+Your+Screenshot+Here)
-
-### Analytics Dashboard
-![Analytics](https://via.placeholder.com/800x400?text=Add+Your+Screenshot+Here)
-
-### Mobile View
-![Mobile View](https://via.placeholder.com/400x800?text=Add+Your+Screenshot+Here)
-
----
 
 ## 🎓 Research & References
 
