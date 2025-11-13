@@ -6,6 +6,8 @@ import numpy as np
 from datetime import datetime, timedelta
 from collections import Counter
 import os
+os.environ['OPENBLAS_NUM_THREADS'] = '1'
+os.environ['MKL_NUM_THREADS'] = '1'
 
 from src.exception import CustomException
 from src.logger import logging
@@ -1127,8 +1129,3 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     debug_mode = os.environ.get('FLASK_ENV', 'production') != 'production'
     
-    app.run(
-        host='0.0.0.0',  # Important for cloud deployment
-        port=port,
-        debug=debug_mode
-    )
