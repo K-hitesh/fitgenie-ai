@@ -29,7 +29,7 @@ class PredictPipeline:
             self.rf_model = joblib.load('artifacts/models/rf_model_final.pkl')
             logging.info(" 	✅ Random Forest loaded")
             
-            self.stacking_meta_model = joblib.load('artifacts/models/stacking_meta_final.pkl')
+            self.stacking_meta_model = joblib.load('artifacts/models/stacking_meta_model_final.pkl')
             logging.info(" 	✅ Stacking Meta loaded")
             
             self.preprocessor = joblib.load('artifacts/models/preprocessor_final.pkl')
