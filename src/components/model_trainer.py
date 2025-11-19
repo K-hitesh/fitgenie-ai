@@ -18,11 +18,11 @@ class ModelTrainerConfig:
     """
     Configuration for model training
     """
-    trained_model_path: str = os.path.join('artifacts', 'models', 'model.pkl')
-    catboost_model_path: str = os.path.join('artifacts', 'models', 'catboost_model.pkl')
-    xgboost_model_path: str = os.path.join('artifacts', 'models', 'xgboost_model.pkl')
-    rf_model_path: str = os.path.join('artifacts', 'models', 'rf_model.pkl')
-    stacking_meta_path: str = os.path.join('artifacts', 'models', 'stacking_meta.pkl')
+    trained_model_path: str = os.path.join('artifacts', 'models', 'model_final.pkl')
+    catboost_model_path: str = os.path.join('artifacts', 'models', 'catboost_model_final.pkl')
+    xgboost_model_path: str = os.path.join('artifacts', 'models', 'xgboost_model_final.pkl')
+    rf_model_path: str = os.path.join('artifacts', 'models', 'rf_model_final.pkl')
+    stacking_meta_path: str = os.path.join('artifacts', 'models', 'stacking_meta_model_final.pkl')
 
 
 class ModelTrainer:
