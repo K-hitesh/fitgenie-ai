@@ -590,18 +590,16 @@ class PredictPipeline:
             proba_cat = self.catboost_model.predict_proba(input_processed)
             proba_xgb = self.xgb_model.predict_proba(input_processed)
             
-            # DISABLED: Random Forest prediction
-            # proba_rf = self.rf_model.predict_proba(input_processed)
+            # SIMPLE ENSEMBLE: Average predictions from CatBoost and XGBoost
+            # This avoids the stacking meta model which expects 3 models (including RF)
+            final_proba = (proba_cat + proba_xgb) / 2
+            final_proba = final_proba[0]  # Get first row
             
-            # Use only CatBoost and XGBoost for meta model
-            X_meta = np.hstack([proba_cat, proba_xgb])
-            
-            final_proba = self.stacking_meta_model.predict_proba(X_meta)[0]
             final_pred_idx = np.argmax(final_proba)
             confidence = float(final_proba[final_pred_idx])
             predicted_fit = self.label_encoder.inverse_transform([final_pred_idx])[0]
             
-            logging.info(f" 	✅ ML Model Predicted Fit: {predicted_fit} ({confidence*100:.1f}%)")
+            logging.info(f" 	✅ Ensemble (CatBoost + XGBoost) Predicted: {predicted_fit} ({confidence*100:.1f}%)")
             
             base_sml_size, recommended_size, size_score = self.calculate_advanced_size(
                 user_data, predicted_fit
