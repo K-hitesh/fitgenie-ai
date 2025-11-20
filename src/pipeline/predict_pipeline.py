@@ -26,8 +26,11 @@ class PredictPipeline:
             self.xgb_model = joblib.load('artifacts/models/xgboost_model_final.pkl')
             logging.info(" 	✅ XGBoost loaded")
             
-            self.rf_model = joblib.load('artifacts/models/rf_model_final.pkl')
-            logging.info(" 	✅ Random Forest loaded")
+            # DISABLED FOR DEPLOYMENT - Random Forest has scikit-learn compatibility issues
+            # self.rf_model = joblib.load('artifacts/models/rf_model_final.pkl')
+            # logging.info(" 	✅ Random Forest loaded")
+            self.rf_model = None  # Temporarily disabled
+            logging.info(" 	⚠️  Random Forest disabled for deployment compatibility")
             
             self.stacking_meta_model = joblib.load('artifacts/models/stacking_meta_model_final.pkl')
             logging.info(" 	✅ Stacking Meta loaded")
@@ -556,6 +559,7 @@ class PredictPipeline:
     def predict(self, user_data):
         """
         Main prediction method. Runs ML prediction.
+        UPDATED: Uses only CatBoost and XGBoost (Random Forest disabled)
         """
         try:
             logging.info("="*60)
@@ -578,16 +582,19 @@ class PredictPipeline:
                     except:
                         return {'success': False, 'error': f'Invalid {field}'}
 
-            # --- ML PREDICTION ---
+            # --- ML PREDICTION (WITHOUT RANDOM FOREST) ---
             
             input_df = self.create_input_features(user_data)
             input_processed = self.preprocessor.transform(input_df)
             
             proba_cat = self.catboost_model.predict_proba(input_processed)
             proba_xgb = self.xgb_model.predict_proba(input_processed)
-            proba_rf = self.rf_model.predict_proba(input_processed)
             
-            X_meta = np.hstack([proba_cat, proba_xgb, proba_rf])
+            # DISABLED: Random Forest prediction
+            # proba_rf = self.rf_model.predict_proba(input_processed)
+            
+            # Use only CatBoost and XGBoost for meta model
+            X_meta = np.hstack([proba_cat, proba_xgb])
             
             final_proba = self.stacking_meta_model.predict_proba(X_meta)[0]
             final_pred_idx = np.argmax(final_proba)
